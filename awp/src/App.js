@@ -1,14 +1,15 @@
     // App.js
 
-    import React, {useEffect, useState} from 'react';
+    import React, {useState} from 'react';
     import LoginForm from './LoginForm';
-    import {Route, Navigate, BrowserRouter, Outlet, Routes} from "react-router-dom";
+    import {Navigate, createBrowserRouter, RouterProvider} from "react-router-dom";
     import Home from "./components/Home";
     import RegisterForm from "./RegisterForm";
     import {isAuthenticated} from "./services/authService";
+    import Application from "./Application";
 
     const App = () => {
-        const [token, setToken] = useState(localStorage.getItem('token'));
+        const [token] = useState(localStorage.getItem('token'));
 
         const ProtectedRoute = ({ children }) => {
             if (!isAuthenticated()) {
@@ -18,14 +19,32 @@
             return children;
         };
 
+        const router = createBrowserRouter([
+            {
+                path: '/',
+                element:  <ProtectedRoute> <Application/> </ProtectedRoute>,
+                children: [
+                    {
+                        path: '/',
+                        element: <Home token={token}/>,
+                    },
+                ],
+            },
+            {
+                path: '/login',
+                element: <LoginForm/>,
+            },
+            {
+                path: '/register',
+                element: <RegisterForm/>,
+            }
+        ]);
+
         return (
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/login" element={<LoginForm/>}/>
-                    <Route path="/register" element={<RegisterForm/>}/>
-                    <Route exact path="/" element={<ProtectedRoute> <Home token={token}/> </ProtectedRoute> }/>
-                </Routes>
-            </BrowserRouter>
+            <div>
+                <RouterProvider router={router}>
+                </RouterProvider>
+            </div>
         );
     };
 
