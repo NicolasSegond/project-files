@@ -2,15 +2,35 @@
 
 import React, {useState} from 'react';
 import './Authentification.css';
-import { useNavigate } from "react-router-dom";
+import {Form, useNavigate} from "react-router-dom";
+import {Button, TextField} from "@mui/material";
+import CustomizedButtons from "../../UI/loginUI/Button";
 
 const LoginForm = ({}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const [isValidEmail, setIsValidEmail] = useState(true);
+
+    const validateEmail = (email) => {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(String(email).toLowerCase());
+    };
 
     const handleLogin = async () => {
+        setIsValidEmail(validateEmail(email));
+
+        if(!email || !password) {
+            setMessage('Please fill all the fields.');
+            return;
+        }
+
+        if (!isValidEmail) {
+            setMessage('Please enter a valid email address.');
+            return;
+        }
+
         try {
             const response = await fetch('https://localhost:8000/api/login', {
                 method: 'POST',
@@ -56,32 +76,16 @@ const LoginForm = ({}) => {
                                     <p className="p">Welcome back! Please enter your details.</p>
                                 </div>
                             </div>
-                            <form className="form">
-                                <input className={'div-wrapper'} type="email" placeholder="Email" value={email}
-                                       onChange={(e) => setEmail(e.target.value)}/>
-                                <input className={'overlap-3'} type="password" placeholder="Password" value={password}
-                                       onChange={(e) => setPassword(e.target.value)}/>
-                                <div className="remember-forgot">
-                                    <div className="remember">
-                                        <input type="checkbox" className="rectangle"/>
-                                        <div className="text-wrapper-9">Remember me</div>
-                                    </div>
-                                    <a href={"#"} className="text-wrapper-8">Forgot password</a>
-                                </div>
-                                <button type="button" className="overlap-1" onClick={handleLogin}>
-                                    Login
-                                </button>
-                                <div className="overlap-group-wrapper">
-                                    <div className="overlap-2">
-                                        <img
-                                            className="free-icon-google"
-                                            alt="Free icon google"
-                                            src="https://cdn.animaapp.com/projects/658716036c38307735fa4d48/releases/658726b270e6cc99f452197d/img/free-icon-google-300221-1.png"
-                                        />
-                                        <div className="text-wrapper-3">Sign in with Google</div>
-                                    </div>
-                                </div>
-                            </form>
+
+                            <Form className={"form"}>
+                                <TextField id="outlined-basic" type={"email"} className={"textField"} label="Email"
+                                           variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                                <TextField id="outlined-basic" type={"password"} className={"textField"} label="Password"
+                                           variant="outlined" margin={"dense"} value={password}
+                                           onChange={(e) => setPassword(e.target.value)}/>
+                                <a href={"#"} className="text-wrapper-8">Forgot password</a>
+                                <CustomizedButtons onClickSignIn={handleLogin}/>
+                            </Form>
                             <p className="don-t-have-an">
                                 <span className="text-wrapper">Don’t have an account?</span>
                                 <span className="span">&nbsp;</span>

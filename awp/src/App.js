@@ -1,10 +1,10 @@
     // App.js
 
     import React, {useState} from 'react';
-    import LoginForm from './LoginForm';
+    import LoginForm from './components/Authentification/LoginForm';
     import {Navigate, createBrowserRouter, RouterProvider} from "react-router-dom";
-    import Home from "./components/Home";
-    import RegisterForm from "./RegisterForm";
+    import Home from "./components/Home/Home";
+    import RegisterForm from "./components/Authentification/RegisterForm";
     import {isAuthenticated} from "./services/authService";
     import Application from "./Application";
 
