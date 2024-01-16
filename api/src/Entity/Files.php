@@ -27,6 +27,17 @@ use Symfony\Component\Serializer\Attribute\Ignore;
     ],
     security: "is_granted('ROLE_USER')"
 )]
+#[ApiResource(
+    uriTemplate: '/files/{user_id}/files.{_format}',
+    shortName: 'Treasure',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'user_id' => new Link(
+            fromProperty: 'files',
+            fromClass: User::class,
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: FilesRepository::class)]
 class Files
 {
