@@ -3,8 +3,10 @@
 import React, {useState} from 'react';
 import './Authentification.css';
 import {Form, useNavigate} from "react-router-dom";
-import {Button, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import CustomizedButtons from "../../UI/loginUI/Button";
+import {customFetch} from "../../services/fetchCustom";
+import apiConfig from "../../services/config";
 
 const LoginForm = ({}) => {
     const [email, setEmail] = useState('');
@@ -30,39 +32,29 @@ const LoginForm = ({}) => {
             setMessage('Please enter a valid email address.');
             return;
         }
+            const dataAuthentication = {
+                email: email,
+                password: password,
+            };
 
-        try {
-            const response = await fetch('https://localhost:8000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            let {data , error} = await customFetch({
+                    url: apiConfig.apiUrl +'/api/login',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: dataAuthentication
                 },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
-            });
+                false
+            );
 
-
-            // Vérifiez si la réponse est un succès (status code 2xx)
-            if (response.ok) {
-                setMessage('Login successful!');
-
-                const data = await response.json();
-                const token = data.token;
-                localStorage.setItem('token', token);
-
-                navigate("/");
-            } else {
-                // Si la réponse n'est pas un succès, affichez un message d'erreur
-                setMessage('Login failed. Please check your credentials.');
+            if(error){
+                setMessage(error.message);
             }
-        } catch (error) {
-            console.error('Error during login:', error);
 
-            // Affichez un message d'erreur dans votre composant React
-            setMessage('Login failed. Please check your credentials.');
-        }
+            localStorage.setItem('token', JSON.stringify(data));
+
+            navigate("/");
     };
     return (
         <div className="index">
