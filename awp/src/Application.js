@@ -30,3 +30,7 @@ const Application = () => {
 }
 
 export default Application;
+
+export async function loader() {
+    return 1;
+}

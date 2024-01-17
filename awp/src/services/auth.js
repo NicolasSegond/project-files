@@ -33,7 +33,7 @@ export function getTokenExpiration(token) {
 }
 
 export async function refreshToken(refreshtoken) {
-    let response = await fetch('https://localhost/api/token/refresh', {
+    let response = await fetch(apiConfig.apiUrl + '/api/token/refresh', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
