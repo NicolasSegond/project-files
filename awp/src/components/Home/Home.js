@@ -1,27 +1,37 @@
 // LoginForm.js
 
 import React from 'react';
-import {redirect} from "react-router-dom";
+import {redirect, useLoaderData} from "react-router-dom";
 import {customFetch} from "../../services/fetchCustom";
+import apiConfig from "../../services/config";
 
-const Home = ({token}) => {
-    return (
-        <div>
-            <h1>Bienvenue sur la page d'accueil</h1>
-            <p>Voici le token : {token}</p>
-        </div>
-    );
-}
-export default Home;
+const Home = ({}) => {
+    const data = useLoaderData().files;
 
-export async function loader({pages}) {
-    if(pages){
-        return;
+    console.log(data);
+
+    // Vérifiez si data existe et est un tableau
+    if (!data || !Array.isArray(data)) {
+        return <div>Aucune donnée à afficher.</div>;
     }
 
+    return (
+        <div>
+            {data.map((item, index) => (
+                <div key={index}>
+                    <h1>{item.name}</h1>
+                    <p>{item.description}</p>
+                </div>
+            ))}
+        </div>
+    );
+};
+export default Home;
+
+export async function loader({}) {
     let {data, error} = await customFetch({
-            url: apiConfig.apiUrl + '/api/files',
-            method: 'GET',
+        url: apiConfig.apiUrl + '/api/files',
+        method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -32,6 +42,6 @@ export async function loader({pages}) {
     }
 
     return {
-        files: data,
+        files: data['hydra:member'],
     };
 }

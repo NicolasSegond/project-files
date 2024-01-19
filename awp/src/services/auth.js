@@ -1,5 +1,6 @@
 import {jwtDecode} from "jwt-decode";
 import dayjs from "dayjs";
+import apiConfig from "./config";
 
 export function getToken() {
     const tokens = localStorage.getItem('token');
@@ -24,9 +25,7 @@ export function getToken() {
 export function getTokenExpiration(token) {
     try{
         const exp = jwtDecode(token).exp;
-        const duration = dayjs.unix(exp).diff(dayjs());
-
-        return duration;
+        return dayjs.unix(exp).diff(dayjs());
     } catch (e) {
         throw new Error('LOGOUT NEEDED - Unable to extract token expiration');
     }

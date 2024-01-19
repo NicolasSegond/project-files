@@ -48,8 +48,7 @@ export async function customFetch(parameters, authentificated = true) {
                     refreshTokenVar = refreshToken(authTokens.refresh_token, false);
                 }
                 try {
-                    const token = await refreshTokenVar;
-                    authTokens.token = token;
+                    authTokens.token = await refreshTokenVar;
 
                     requestConfigInit = addBearerToTheHeader(authTokens.token, requestConfigInit);
                 } catch (e) {
@@ -73,7 +72,6 @@ export async function customFetch(parameters, authentificated = true) {
     } finally {
         refreshTokenVar = undefined;
     }
-    console.log(response);
     return response;
 }
 

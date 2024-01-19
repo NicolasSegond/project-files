@@ -17,17 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ApiResource(
-    shortName: 'File',
-    operations: [
-        new Get(),
-        new Post(),
-        new GetCollection(),
-        new Patch(),
-        new Delete()
-    ],
-    security: "is_granted('ROLE_USER')"
-)]
-#[ApiResource(
     uriTemplate: '/files/{user_id}/files.{_format}',
     shortName: 'Treasure',
     operations: [new GetCollection()],
@@ -37,8 +26,20 @@ use Symfony\Component\Serializer\Attribute\Ignore;
             fromClass: User::class,
         ),
     ],
+    security: "is_granted('ROLE_USER')"
 )]
 #[ORM\Entity(repositoryClass: FilesRepository::class)]
+
+#[ApiResource(
+    shortName: 'File',
+    operations: [
+        new Get(security: "is_granted('ROLE_USER')"),
+        new Post(security: "is_granted('ROLE_USER')"),
+        new GetCollection(),
+        new Patch(security: "is_granted('ROLE_USER')"),
+        new Delete(security: "is_granted('ROLE_USER')")
+    ],
+)]
 class Files
 {
     #[ORM\Id]
