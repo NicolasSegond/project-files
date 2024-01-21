@@ -12,15 +12,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Twig\Extension\SandboxExtension;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource(
-    operations: [
-        new GetCollection(security: "is_granted('ROLE_USER')"),
-        new Post(security: "is_granted('PUBLIC_ACCESS')"),
-    ],
-)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -40,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Files::class)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Files::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $files;
 
     public function __construct()
@@ -124,6 +119,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFiles(): Collection
     {
         return $this->files;
+    }
+
+    public function setFiles(Collection $files): void
+    {
+        $this->files = $files;
     }
 
     public function addFile(Files $file): static

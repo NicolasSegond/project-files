@@ -4,11 +4,11 @@ import React from 'react';
 import {redirect, useLoaderData} from "react-router-dom";
 import {customFetch} from "../../services/fetchCustom";
 import apiConfig from "../../services/config";
+import {getIdUser} from "../../services/auth";
 
 const Home = ({}) => {
     const data = useLoaderData().files;
-
-    console.log(data);
+    const idUser = getIdUser(localStorage.getItem('token'));
 
     // Vérifiez si data existe et est un tableau
     if (!data || !Array.isArray(data)) {
@@ -17,6 +17,7 @@ const Home = ({}) => {
 
     return (
         <div>
+            l'id user : {idUser}
             {data.map((item, index) => (
                 <div key={index}>
                     <h1>{item.name}</h1>
@@ -38,7 +39,7 @@ export async function loader({}) {
         }
     );
     if(error && error.message && error.message.includes('LOGOUT NEEDED')){
-        return redirect('/logout');
+        return redirect('/login');
     }
 
     return {

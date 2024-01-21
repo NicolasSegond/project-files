@@ -29,7 +29,8 @@
         "symfony/serializer": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "symfony/yaml": "6.4.*",
+        "symfonycasts/micro-mapper": "^0.1.4"
     },
     "config": {
         "allow-plugins": {
@@ -80,6 +81,12 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.52"
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "6.4.*",
+        "symfony/css-selector": "6.4.*",
+        "symfony/maker-bundle": "^1.52",
+        "symfony/phpunit-bridge": "^7.0",
+        "zenstruck/browser": "^1.7",
+        "zenstruck/foundry": "^1.36"
     }
 }

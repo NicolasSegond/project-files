@@ -30,7 +30,7 @@ class RefreshTokenPathFactoryDecorator implements OpenApiFactoryInterface
                     ->withTags(['Authorization'])
                     ->withResponses([
                         Response::HTTP_OK => [
-                            'description' => 'User tokens created.',
+                            'description' => 'UserAPI tokens created.',
                             'content' => [
                                 'application/json' => [
                                     'schema' => [

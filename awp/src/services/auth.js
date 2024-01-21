@@ -67,3 +67,17 @@ export function addBearerToTheHeader(token, requestConfigInit = {}) {
         }
     };
 }
+
+export function getIdUser(token) {
+    try {
+        // Décoder le token
+        const decodedToken = jwtDecode(token);
+
+        // Récupérer l'id de l'utilisateur
+        const user = decodedToken.user;
+
+        return user.id;
+    } catch (e) {
+        throw new Error('LOGOUT NEEDED - Unable to extract user id');
+    }
+}

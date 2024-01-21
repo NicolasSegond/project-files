@@ -2,44 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
 use App\Repository\FilesRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
-#[ApiResource(
-    uriTemplate: '/files/{user_id}/files.{_format}',
-    shortName: 'Treasure',
-    operations: [new GetCollection()],
-    uriVariables: [
-        'user_id' => new Link(
-            fromProperty: 'files',
-            fromClass: User::class,
-        ),
-    ],
-    security: "is_granted('ROLE_USER')"
-)]
 #[ORM\Entity(repositoryClass: FilesRepository::class)]
-
-#[ApiResource(
-    shortName: 'File',
-    operations: [
-        new Get(security: "is_granted('ROLE_USER')"),
-        new Post(security: "is_granted('ROLE_USER')"),
-        new GetCollection(),
-        new Patch(security: "is_granted('ROLE_USER')"),
-        new Delete(security: "is_granted('ROLE_USER')")
-    ],
-)]
 class Files
 {
     #[ORM\Id]
@@ -52,7 +19,6 @@ class Files
 
     #[ORM\ManyToOne(inversedBy: 'files')]
     #[ORM\JoinColumn(nullable: false)]
-    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?User $owner = null;
 
     #[ORM\Column(length: 255)]
@@ -68,11 +34,9 @@ class Files
     private ?string $chemin = null;
 
     #[ORM\Column(length: 255)]
-    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?string $statut = null;
 
     #[ORM\Column]
-    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private array $shared_with = [];
 
     public function getId(): ?int
@@ -165,7 +129,6 @@ class Files
         return $this;
     }
 
-    #[Ignore]
     public function getSharedWith(): array
     {
         return $this->shared_with;

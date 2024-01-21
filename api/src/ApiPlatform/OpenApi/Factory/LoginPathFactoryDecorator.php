@@ -30,7 +30,7 @@ class LoginPathFactoryDecorator implements OpenApiFactoryInterface
                     ->withTags(['Authorization'])
                     ->withResponses([
                         Response::HTTP_OK => [
-                            'description' => 'User logged in successfully.',
+                            'description' => 'UserAPI logged in successfully.',
                             'content' => [
                                 'application/json' => [
                                     'schema' => [

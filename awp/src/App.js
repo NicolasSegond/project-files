@@ -1,38 +1,33 @@
     // App.js
 
-    import React, {useState} from 'react';
+    import React from 'react';
     import LoginForm from './components/Authentification/LoginForm';
-    import {Navigate, createBrowserRouter, RouterProvider} from "react-router-dom";
+    import {createBrowserRouter, RouterProvider} from "react-router-dom";
     import Home, {loader as loaderHome} from "./components/Home/Home";
     import RegisterForm from "./components/Authentification/RegisterForm";
-    import {isAuthenticated} from "./services/authService";
-    import Application from "./Application";
+    import Application, {loader as loaderApplication} from "./Application";
 
     const App = () => {
 
-        const ProtectedRoute = ({ children }) => {
-            if (!isAuthenticated()) {
-                return <Navigate to="/login" replace />;
-            }
-
-            return children;
-        };
+        // const ProtectedRoute = ({ children }) => {
+        //     if (!isAuthenticated()) {
+        //         return <Navigate to="/login" replace />;
+        //     }
+        //
+        //     return children;
+        // };
 
         const router = createBrowserRouter([
             {
                 path: '/',
                 element:   <Application/>,
+                loader: loaderApplication,
                 children: [
                     {
                         path: '/',
                         element: <Home/>,
                         loader: loaderHome,
                     },
-                    {
-                        path: '/home',
-                        element: <Home/>,
-                        loader: loaderHome,
-                    }
                 ],
             },
             {
