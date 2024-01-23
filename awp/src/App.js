@@ -1,31 +1,50 @@
     // App.js
 
-    import React, {useEffect, useState} from 'react';
-    import LoginForm from './LoginForm';
-    import {Route, Navigate, BrowserRouter, Outlet, Routes} from "react-router-dom";
-    import Home from "./components/Home";
-    import RegisterForm from "./RegisterForm";
-    import {isAuthenticated} from "./services/authService";
+    import React from 'react';
+    import LoginForm from './components/Authentification/LoginForm';
+    import {createBrowserRouter, RouterProvider} from "react-router-dom";
+    import Home, {loader as loaderHome} from "./components/Home/Home";
+    import RegisterForm from "./components/Authentification/RegisterForm";
+    import Application, {loader as loaderApplication} from "./Application";
 
     const App = () => {
-        const [token, setToken] = useState(localStorage.getItem('token'));
 
-        const ProtectedRoute = ({ children }) => {
-            if (!isAuthenticated()) {
-                return <Navigate to="/login" replace />;
+        // const ProtectedRoute = ({ children }) => {
+        //     if (!isAuthenticated()) {
+        //         return <Navigate to="/login" replace />;
+        //     }
+        //
+        //     return children;
+        // };
+
+        const router = createBrowserRouter([
+            {
+                path: '/',
+                element:   <Application/>,
+                loader: loaderApplication,
+                children: [
+                    {
+                        path: '/',
+                        element: <Home/>,
+                        loader: loaderHome,
+                    },
+                ],
+            },
+            {
+                path: '/login',
+                element: <LoginForm/>,
+            },
+            {
+                path: '/register',
+                element: <RegisterForm/>,
             }
-
-            return children;
-        };
+        ]);
 
         return (
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/login" element={<LoginForm/>}/>
-                    <Route path="/register" element={<RegisterForm/>}/>
-                    <Route exact path="/" element={<ProtectedRoute> <Home token={token}/> </ProtectedRoute> }/>
-                </Routes>
-            </BrowserRouter>
+            <div>
+                <RouterProvider router={router}>
+                </RouterProvider>
+            </div>
         );
     };
 

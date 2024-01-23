@@ -22,7 +22,7 @@ class FilesRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Files[] Returns an array of Files objects
+//     * @return FilesAPI[] Returns an array of FilesAPI objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class FilesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Files
+//    public function findOneBySomeField($value): ?FilesAPI
 //    {
 //        return $this->createQueryBuilder('f')
 //            ->andWhere('f.exampleField = :val')
