@@ -38,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Files::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $files;
 
+    #[ORM\Column]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->files = new ArrayCollection();
@@ -144,6 +147,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $file->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
 
         return $this;
     }

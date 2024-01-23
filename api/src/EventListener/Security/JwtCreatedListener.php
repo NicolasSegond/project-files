@@ -34,7 +34,8 @@ class JwtCreatedListener
         $payload['ip'] = $request->getClientIp();
         $infoUser = [];
 
-        $infoUser['id'] = "/api/users/".$user->getId();
+        $infoUser['uri_utilisateur'] = "/api/users/".$user->getId();
+        $infoUser['id'] = $user->getId();
         $infoUser['email'] = $user->getEmail();
         $infoUser['roles'] = $user->getRoles();
 

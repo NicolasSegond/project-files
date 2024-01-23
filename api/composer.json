@@ -30,7 +30,8 @@
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
         "symfony/yaml": "6.4.*",
-        "symfonycasts/micro-mapper": "^0.1.4"
+        "symfonycasts/micro-mapper": "^0.1.4",
+        "ext-http": "*"
     },
     "config": {
         "allow-plugins": {
